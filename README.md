@@ -31,12 +31,13 @@ Utilizo `fuse.mergerfs` para unificar múltiples unidades físicas y remotas en 
 
 Para que los contenedores operen sin conflictos (Atomic Moves), se mantiene una estructura coherente en el pool:
 
-````text
+```text
 /mnt/storage/data/
 ├── downloads/      # Descargas completadas
 ├── media/          # Biblioteca final organizada (Movies, TV, Music)
 ├── torrents/       # Archivos .torrent activos
 └── nextcloud/      # Almacenamiento de nube personal
+```
 
 ---
 
@@ -73,7 +74,7 @@ La persistencia de los montajes remotos y el pool de MergerFS se gestiona median
 
 # Pool unificado con MergerFS
 /mnt/disk1:/mnt/disk_os:/mnt/nucbox_remote:/mnt/hdd_500gb /mnt/storage fuse.mergerfs defaults,allow_other,use_ino,category.create=mfs 0 0
-````
+```
 
 Estructura de Datos Unificada
 Para que los contenedores operen sin conflictos (Atomic Moves), se mantiene una estructura coherente en el pool:
