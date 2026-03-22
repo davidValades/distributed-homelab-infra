@@ -1,0 +1,20 @@
+# /etc/fstab: Ejemplo de configuración para Homelab Híbrido
+# --------------------------------------------------------
+
+# 1. DISCO LOCAL (HDD 2TB)
+# Sustituye el UUID por el de tu disco (lsblk -f)
+UUID=tu-uuid-aqui /mnt/disk1 ext4 defaults 0 0
+
+# 2. DISCO REMOTO (NucBox - Partición 800GB)
+# Usa x-systemd.automount para que no falle el arranque si el NucBox está apagado
+//192.168.1.XX/Carpeta_Compartida /mnt/nucbox_remote cifs credentials=/home/usuario/.smbcredentials,_netdev,x-systemd.automount,x-systemd.requires=network-online.target,iocharset=utf8,uid=1000,gid=1000,file_mode=0775,dir_mode=0775 0 0
+
+# 3. HDD SECUNDARIO REMOTO
+//192.168.1.XX/Otra_Unidad /mnt/hdd_500gb cifs credentials=/home/usuario/.smbcredentials,uid=1000,gid=1000,iocharset=utf8,_netdev,x-systemd.automount 0 0
+
+# 4. BIND MOUNT (Carpeta interna del sistema)
+/data /mnt/disk_os none defaults,bind 0 0
+
+# 5. POOL UNIFICADO (MergerFS)
+# Une todos los puntos anteriores en /mnt/storage
+/mnt/disk1:/mnt/disk_os:/mnt/nucbox_remote:/mnt/hdd_500gb /mnt/storage fuse.mergerfs defaults,allow_other,use_ino,uid=1000,gid=1000,category.create=mfs,minfreespace=50G,fsname=mergerfsPool 0 0
